@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.viewmodel.WeatherViewModel
+import androidx.compose.ui.text.style.LineHeightStyle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +90,16 @@ fun WeatherDashboardScreen(
                 title = "Weather Index",
                 value = "${weatherState.weatherIndex}",
                 isLoading = false
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "🔃 Auto-refresh every 10s",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
         Spacer(modifier = Modifier.height(32.dp))

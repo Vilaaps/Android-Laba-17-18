@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+
 
 
 class WeatherViewModel : ViewModel() {
@@ -18,6 +21,8 @@ class WeatherViewModel : ViewModel() {
     val weatherState: StateFlow<WeatherData> = _weatherState.asStateFlow()
     init {
         loadWeatherData()
+        startAutoRefresh()
+        // viewModelScope автоматически отменит корутину при onCleared()
     }
     fun toggleErrorSimulation(){
         repository.toggleErrorSimulation()
@@ -77,6 +82,18 @@ class WeatherViewModel : ViewModel() {
                     error = "Ошибка загрузки: ${e.message}",
                     loadingProgress = ""
                 )
+            }
+        }
+    }
+    private fun startAutoRefresh(){
+        viewModelScope.launch{
+            flow{
+                while(true){
+                    delay(10000)
+                    emit(Unit)
+                }
+            }.collect {
+                loadWeatherData()
             }
         }
     }
